@@ -8,17 +8,12 @@ import { IoIosArrowBack } from "react-icons/io";
 import { LuAlarmClock } from "react-icons/lu";
 import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 
-interface ExamQuestion {
-  id: number | string;
-  question: string;
-  options: string[];
-  correctAnswer?: number;
-}
-
+// Types
+import { ExamType } from "../utils/types";
 interface ExamModalProps {
   isOpen: boolean;
   onClose: () => void;
-  exam: { questions: ExamQuestion[]; time: string };
+  exam: ExamType;
   examId?: string;
 }
 
@@ -99,7 +94,7 @@ export default function ExamModal({
   // Restore the previously picked answer when navigating between questions
   useEffect(() => {
     setSelectedAnswer(answers[currentQuestion] ?? null);
-  }, [currentQuestion]);
+  }, [currentQuestion, answers]);
 
   function formatTime(seconds: number) {
     const minutes = Math.floor(seconds / 60);

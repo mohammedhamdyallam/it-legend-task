@@ -22,10 +22,7 @@ import { courseRoadMapData } from "../utils/constants";
 
 // Types
 import { questionsType } from "../utils/types";
-type ExamType = {
-  questions: questionsType;
-  time: number;
-};
+import { ExamType } from "../utils/types";
 
 export default function CourseRoadMap() {
   // State

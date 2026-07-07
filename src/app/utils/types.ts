@@ -4,5 +4,8 @@ export type Question = {
   options: string[];
   correctAnswer: number;
 };
-
 export type questionsType = Question[];
+export type ExamType = {
+  questions: questionsType;
+  time: number;
+};
