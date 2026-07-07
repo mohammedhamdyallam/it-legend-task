@@ -1,5 +1,27 @@
 // Course Road Map Data
-export const courseRoadMapData = [
+export const courseRoadMapData: [
+  {
+    week: string;
+    description: string;
+    lessons: [
+      {
+        title: string;
+        type: string;
+        questionsCount: number;
+        time: number;
+        questions: [
+          {
+            id: number;
+            question: string;
+            options: string[];
+            correctAnswer: number;
+          },
+        ];
+        file: string;
+      },
+    ];
+  },
+] = [
   {
     week: "Week 1 - Week 4",
     description:

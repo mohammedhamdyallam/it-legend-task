@@ -20,6 +20,13 @@ import ExamModal from "./examModal";
 // Data
 import { courseRoadMapData } from "../utils/constants";
 
+// Types
+import { questionsType } from "../utils/types";
+type ExamType = {
+  questions: questionsType;
+  time: number;
+};
+
 export default function CourseRoadMap() {
   // State
   const [isDesktop, setIsDesktop] = useState(false);
@@ -27,8 +34,11 @@ export default function CourseRoadMap() {
   const [isPdfOpen, setIsPdfOpen] = useState(false);
   const [pdfFile, setPdfFile] = useState("");
   const [isExamOpen, setIsExamOpen] = useState(false);
-  const [exam, setExam] = useState("");
-
+  const [exam, setExam] = useState<ExamType>({
+    questions: [],
+    time: 0,
+  });
+  
   // Effect to check if the screen is desktop size
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1024px)");
@@ -59,8 +69,8 @@ export default function CourseRoadMap() {
   }
 
   // Open Exam
-  function openExam(exam, time: number) {
-    setExam({ questions: exam, time });
+  function openExam(questions: questionsType, time: number) {
+    setExam({ questions, time });
     setIsExamOpen(true);
   }
 
