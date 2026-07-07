@@ -87,7 +87,7 @@ export default function CourseRoadMap() {
       {courseRoadMapData.map((topic, index) => (
         <div
           key={index}
-          className="bg-white border border-gray-300 shadow-md mt-6 overflow-hidden"
+          className="bg-white border border-gray-300 shadow-md mt-12 overflow-hidden"
         >
           <button
             onClick={() => {

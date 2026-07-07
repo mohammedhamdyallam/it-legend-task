@@ -6,10 +6,10 @@ import { RiBookShelfLine } from "react-icons/ri";
 
 export default function CourseMaterials() {
   return (
-    <section className="mb-10">
-      <h2 className="mb-2 text-2xl">Course Materials</h2>
+    <section className="mb-17">
+      <h2 className="mb-4 text-2xl font-bold">Course Materials</h2>
 
-      <div className="flex flex-col lg:flex-row gap-0 lg:gap-45 bg-white rounded-lg shadow-md p-6">
+      <div className="flex flex-col lg:flex-row gap-0 lg:gap-17 xl:gap-45 bg-white rounded-lg shadow-md p-6">
         <table className="w-full border-collapse">
           <tbody>
             <tr className="border-b border-[#dfdfdf]">

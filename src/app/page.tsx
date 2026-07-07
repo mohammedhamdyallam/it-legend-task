@@ -43,7 +43,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex flex-col lg:flex-row container mx-auto px-4">
-        <div className="flex-8 mr-6">
+        <div className="flex-8">
           {/* hero-section */}
           <section>
             {/* Course Video */}
@@ -60,13 +60,13 @@ export default function Home() {
           <CourseMaterials />
 
           {/* Course Road Map */}
-          <div className="flex-4 lg:hidden flex flex-col">
+          <div className="flex-4 lg:hidden flex flex-col mb-15">
             <CourseRoadMap />
           </div>
 
           {/* Commments */}
           <section id="comments" className="mb-10">
-            <h2 className="text-2xl">Comments</h2>
+            <h2 className="mb-4 text-2xl font-bold">Comments</h2>
 
             {/* Comments */}
             <Comments />
@@ -74,7 +74,7 @@ export default function Home() {
         </div>
 
         {/* Course Road Map */}
-        <div className="flex-4 lg:flex flex-col hidden">
+        <div className="hidden flex-4 flex-col lg:flex lg:ml-5 xl:ml-15 mb-10">
           <CourseRoadMap />
         </div>
       </main>

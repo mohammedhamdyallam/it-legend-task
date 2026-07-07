@@ -98,7 +98,7 @@ export default function Comments() {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Write a comment"
-          className="w-full h-50 shadow-[0_2px_30px_rgba(107,114,128,0.25)] p-7 outline-0"
+          className="w-full h-50 shadow-[0_2px_30px_rgba(107,114,128,0.25)] p-7 rounded-sm outline-0"
         />
         <button
           className="flex items-center gap-2 bg-[#41b69d] hover:bg-[#29b496] text-white px-5 py-3 rounded mt-2"

@@ -75,7 +75,7 @@ export default function IconsSections() {
 
   return (
     <>
-      <div className="flex space-x-4 mt-10 mb-10">
+      <div className="flex space-x-4 mt-5 mb-10">
         <a
           href="#comments"
           className="rounded-full border border-[#e7e7e7] p-2.5 text-[#808080] transition-all duration-200 hover:bg-gray-100 hover:text-black hover:border-gray-300"
