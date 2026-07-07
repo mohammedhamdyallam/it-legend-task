@@ -10,7 +10,7 @@ export default function Comments() {
   const [comments, setComments] = useState([
     {
       student: {
-        profilePic: "/images/profile-pic1.webp",
+        profilePic: "/assets/images/profile-pic1.webp",
         name: "Student Name Gose Here",
       },
       comment:
@@ -19,7 +19,7 @@ export default function Comments() {
     },
     {
       student: {
-        profilePic: "/images/profile-pic2.webp",
+        profilePic: "/assets/images/profile-pic2.webp",
         name: "Student Name Gose Here",
       },
       comment:
@@ -28,7 +28,7 @@ export default function Comments() {
     },
     {
       student: {
-        profilePic: "/images/profile-pic3.webp",
+        profilePic: "/assets/images/profile-pic3.webp",
         name: "Student Name Gose Here",
       },
       comment:
@@ -46,7 +46,7 @@ export default function Comments() {
       // Create New Comment Object
       const comment = {
         student: {
-          profilePic: "/images/profile-pic1.webp",
+          profilePic: "/assets/images/profile-pic1.webp",
           name: "Student Name Gose Here",
         },
         comment: newComment,

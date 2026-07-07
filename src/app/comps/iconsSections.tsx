@@ -23,43 +23,43 @@ export default function IconsSections() {
   // Constants
   const leaderboard: LeaderBoard = [
     {
-      profilePic: "/images/profile-pic1.webp",
+      profilePic: "/assets/images/profile-pic1.webp",
       name: "Ahmed Ali",
     },
     {
-      profilePic: "/images/profile-pic2.webp",
+      profilePic: "/assets/images/profile-pic2.webp",
       name: "Sara Mohamed",
     },
     {
-      profilePic: "/images/profile-pic3.webp",
+      profilePic: "/assets/images/profile-pic3.webp",
       name: "Omar Hassan",
     },
     {
-      profilePic: "/images/profile-pic2.webp",
+      profilePic: "/assets/images/profile-pic2.webp",
       name: "Mariam Mostafa",
     },
     {
-      profilePic: "/images/profile-pic2.webp",
+      profilePic: "/assets/images/profile-pic2.webp",
       name: "Youssef Khaled",
     },
     {
-      profilePic: "/images/profile-pic3.webp",
+      profilePic: "/assets/images/profile-pic3.webp",
       name: "Nour Ahmed",
     },
     {
-      profilePic: "/images/profile-pic1.webp",
+      profilePic: "/assets/images/profile-pic1.webp",
       name: "Karim Adel",
     },
     {
-      profilePic: "/images/profile-pic2.webp",
+      profilePic: "/assets/images/profile-pic2.webp",
       name: "Laila Samir",
     },
     {
-      profilePic: "/images/profile-pic3.webp",
+      profilePic: "/assets/images/profile-pic3.webp",
       name: "Mahmoud Tarek",
     },
     {
-      profilePic: "/images/profile-pic3.webp",
+      profilePic: "/assets/images/profile-pic3.webp",
       name: "Hana Gamal",
     },
   ];
