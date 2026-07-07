@@ -3,7 +3,14 @@
 // Icons
 import { FaTimes } from "react-icons/fa";
 
-export default function PdfModal({ isOpen, onClose, file }: { isOpen: boolean; onClose: () => void; file: string }) {
+// Types
+type PdfModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  file: string;
+};
+
+export default function PdfModal({ isOpen, onClose, file }: PdfModalProps) {
   return (
     <>
       {isOpen && (
@@ -16,10 +23,7 @@ export default function PdfModal({ isOpen, onClose, file }: { isOpen: boolean; o
               <FaTimes />
             </button>
 
-            <iframe
-              src={file}
-              className="h-full w-full"
-            />
+            <iframe src={file} className="h-full w-full" />
           </div>
         </div>
       )}

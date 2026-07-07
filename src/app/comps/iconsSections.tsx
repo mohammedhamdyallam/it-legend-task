@@ -12,13 +12,16 @@ import { FaQuestion } from "react-icons/fa6";
 import { LiaCommentSolid } from "react-icons/lia";
 import { MdOutlineLeaderboard } from "react-icons/md";
 
+// Types
+import { LeaderBoard } from "../utils/types";
+
 export default function IconsSections() {
   // State
   const [isLeaderBoardOpen, setIsLeaderBoardOpen] = useState(false);
   const [isQuestionSectionOpen, setIsQuestionSectionOpen] = useState(false);
 
   // Constants
-  const leaderboard = [
+  const leaderboard: LeaderBoard = [
     {
       profilePic: "/images/profile-pic1.webp",
       name: "Ahmed Ali",

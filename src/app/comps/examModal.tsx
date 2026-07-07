@@ -10,11 +10,20 @@ import { IoCheckmarkCircle, IoCloseCircle } from "react-icons/io5";
 
 // Types
 import { ExamType } from "../utils/types";
-interface ExamModalProps {
+
+type ExamModalProps = {
   isOpen: boolean;
   onClose: () => void;
   exam: ExamType;
   examId?: string;
+}
+
+type ExamState = {
+  answers: (number | null)[];
+  currentQuestion: number;
+  timeLeft: number;
+  isFinished: boolean;
+  selectedAnswer: number | null;
 }
 
 export default function ExamModal({
@@ -32,69 +41,77 @@ export default function ExamModal({
     return `exam-progress:${key}`;
   }, [examId, exam]);
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<(number | null)[]>(() =>
-    Array(totalQuestions).fill(null),
-  );
-  const [timeLeft, setTimeLeft] = useState(Number(exam?.time) || 0);
-  const [isFinished, setIsFinished] = useState(false);
+  const [examState, setExamState] = useState<ExamState>(() => {
+    const defaultState: ExamState = {
+      answers: Array(totalQuestions).fill(null),
+      currentQuestion: 0,
+      timeLeft: Number(exam?.time) || 0,
+      isFinished: false,
+      selectedAnswer: null,
+    };
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    let restoredAnswers = Array(totalQuestions).fill(null);
-    let restoredQuestion = 0;
-    let restoredTime = Number(exam?.time) || 0;
-    let restoredFinished = false;
-
-    const saved = sessionStorage.getItem(storageKey);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed.answers)) restoredAnswers = parsed.answers;
-      if (typeof parsed.currentQuestion === "number")
-        restoredQuestion = parsed.currentQuestion;
-      if (typeof parsed.timeLeft === "number") restoredTime = parsed.timeLeft;
-      if (typeof parsed.isFinished === "boolean")
-        restoredFinished = parsed.isFinished;
+    if (typeof window === "undefined") {
+      return defaultState;
     }
 
-    setAnswers(restoredAnswers);
-    setCurrentQuestion(restoredQuestion);
-    setTimeLeft(restoredTime);
-    setIsFinished(restoredFinished);
-    setSelectedAnswer(restoredAnswers[restoredQuestion] ?? null);
+    try {
+      const saved = sessionStorage.getItem(storageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        let restoredAnswers = Array(totalQuestions).fill(null);
+        let restoredQuestion = 0;
+        let restoredTime = Number(exam?.time) || 0;
+        let restoredFinished = false;
 
-    if (restoredFinished) return;
+        if (Array.isArray(parsed.answers)) restoredAnswers = parsed.answers;
+        if (typeof parsed.currentQuestion === "number")
+          restoredQuestion = parsed.currentQuestion;
+        if (typeof parsed.timeLeft === "number") restoredTime = parsed.timeLeft;
+        if (typeof parsed.isFinished === "boolean")
+          restoredFinished = parsed.isFinished;
+
+        return {
+          answers: restoredAnswers,
+          currentQuestion: restoredQuestion,
+          timeLeft: restoredTime,
+          isFinished: restoredFinished,
+          selectedAnswer: restoredAnswers[restoredQuestion] ?? null,
+        };
+      }
+    } catch (e) {
+      console.error("Error restoring exam state:", e);
+    }
+
+    return defaultState;
+  });
+
+  const { answers, currentQuestion, timeLeft, isFinished, selectedAnswer } =
+    examState;
+
+  // Timer Effect
+  useEffect(() => {
+    if (isFinished) return;
 
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
+      setExamState((prev) => {
+        if (prev.timeLeft <= 1) {
           clearInterval(timer);
-          setIsFinished(true);
-          return 0;
+          return { ...prev, timeLeft: 0, isFinished: true };
         }
-        return prev - 1;
+        return { ...prev, timeLeft: prev.timeLeft - 1 };
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isOpen, exam?.time, totalQuestions, storageKey]);
+  }, [isFinished]);
 
   // Persist progress on every change so it can be restored later
   useEffect(() => {
-    if (!isOpen) return;
-
     sessionStorage.setItem(
       storageKey,
       JSON.stringify({ answers, currentQuestion, timeLeft, isFinished }),
     );
-  }, [isOpen, answers, currentQuestion, timeLeft, isFinished, storageKey]);
-
-  // Restore the previously picked answer when navigating between questions
-  useEffect(() => {
-    setSelectedAnswer(answers[currentQuestion] ?? null);
-  }, [currentQuestion, answers]);
+  }, [answers, currentQuestion, timeLeft, isFinished, storageKey]);
 
   function formatTime(seconds: number) {
     const minutes = Math.floor(seconds / 60);
@@ -102,21 +119,34 @@ export default function ExamModal({
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   }
 
+  function goToQuestion(index: number) {
+    setExamState((prev) => ({
+      ...prev,
+      currentQuestion: index,
+      selectedAnswer: prev.answers[index] ?? null,
+    }));
+  }
+
   function selectAnswer(ind: number) {
-    setSelectedAnswer(ind);
-    setAnswers((prev) => {
-      const updated = [...prev];
-      updated[currentQuestion] = ind;
-      return updated;
+    setExamState((prev) => {
+      const updated = [...prev.answers];
+      updated[prev.currentQuestion] = ind;
+      return { ...prev, answers: updated, selectedAnswer: ind };
     });
   }
 
   function submitAnswer() {
-    if (currentQuestion + 1 >= totalQuestions) {
-      setIsFinished(true);
-    } else {
-      setCurrentQuestion((prev) => prev + 1);
-    }
+    setExamState((prev) => {
+      if (prev.currentQuestion + 1 >= totalQuestions) {
+        return { ...prev, isFinished: true };
+      }
+      const nextQuestion = prev.currentQuestion + 1;
+      return {
+        ...prev,
+        currentQuestion: nextQuestion,
+        selectedAnswer: prev.answers[nextQuestion] ?? null,
+      };
+    });
   }
 
   // Score summary + per-question review for the results screen
@@ -279,7 +309,7 @@ export default function ExamModal({
 
                         {userAnswer === null && (
                           <div className="rounded-lg bg-yellow-50 border border-yellow-300 p-3 text-sm text-yellow-700">
-                            You didn't answer this question.
+                            You didn&#39;t answer this question.
                           </div>
                         )}
                       </div>
@@ -327,7 +357,7 @@ export default function ExamModal({
                 return (
                   <div
                     key={absoluteIndex}
-                    onClick={() => setCurrentQuestion(absoluteIndex)}
+                    onClick={() => goToQuestion(absoluteIndex)}
                     className={`border rounded-full flex justify-center items-center w-15 h-15 p-3 cursor-pointer transition
                     ${
                       currentQuestion === absoluteIndex
@@ -382,7 +412,7 @@ export default function ExamModal({
               ))}
             </div>
 
-            {selectedAnswer && (
+            {selectedAnswer !== null && (
               <div className="flex justify-center items-center p-5">
                 <button
                   onClick={submitAnswer}

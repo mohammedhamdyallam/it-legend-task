@@ -162,10 +162,14 @@ export default function CourseRoadMap() {
       ))}
 
       {/* Pdf Modal */}
-      <PdfModal isOpen={isPdfOpen} onClose={closePdf} file={pdfFile} />
+      {isPdfOpen && (
+        <PdfModal isOpen={isPdfOpen} onClose={closePdf} file={pdfFile} />
+      )}
 
       {/* Exam Modal */}
-      <ExamModal isOpen={isExamOpen} onClose={closeExam} exam={exam} />
+      {isExamOpen && (
+        <ExamModal isOpen={isExamOpen} onClose={closeExam} exam={exam} />
+      )}
     </>
   );
 }

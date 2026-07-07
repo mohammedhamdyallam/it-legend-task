@@ -6,7 +6,15 @@ import Image from "next/image";
 // Icons
 import { IoIosArrowBack } from "react-icons/io";
 
-export default function LeaderBoardModal({ isOpen, onClose, leaderboard }) {
+// Types
+import { LeaderBoard } from "../utils/types";
+type LeaderBoardModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  leaderboard: LeaderBoard;
+}
+
+export default function LeaderBoardModal({ isOpen, onClose, leaderboard }: LeaderBoardModalProps) {
   // Constants
   const messages = [
     {

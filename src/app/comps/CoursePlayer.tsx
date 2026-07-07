@@ -152,10 +152,41 @@ export default function CoursePlayer({
     }
   };
 
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      setDuration(videoRef.current.duration || 0);
+  // Duration handling — some encodings (e.g. MediaRecorder blobs, certain
+  // short mp4/webm files with a missing/broken moov duration atom) report
+  // `duration` as Infinity or NaN right after loadedmetadata. Short clips
+  // are the most likely to hit this. If that happens, we force the browser
+  // to seek near the end once, which makes it compute the real duration,
+  // then seek back to the start.
+  const applyDuration = (video: HTMLVideoElement) => {
+    if (Number.isFinite(video.duration) && video.duration > 0) {
+      setDuration(video.duration);
+      return true;
     }
+    return false;
+  };
+
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (applyDuration(video)) return;
+
+    const fixDuration = () => {
+      video.removeEventListener("timeupdate", fixDuration);
+      applyDuration(video);
+      video.currentTime = 0;
+    };
+
+    video.addEventListener("timeupdate", fixDuration);
+    // Seeking far past the end forces most browsers to resolve the real duration
+    video.currentTime = Number.MAX_SAFE_INTEGER;
+  };
+
+  const handleDurationChange = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    applyDuration(video);
   };
 
   // Handle seek
@@ -333,6 +364,7 @@ export default function CoursePlayer({
           onClick={togglePlay}
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
+          onDurationChange={handleDurationChange}
           onEnded={() => setIsPlaying(false)}
         />
 

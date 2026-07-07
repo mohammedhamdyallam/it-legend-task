@@ -1,27 +1,12 @@
+// Types
+import { Lesson } from "./types";
+
 // Course Road Map Data
-export const courseRoadMapData: [
-  {
-    week: string;
-    description: string;
-    lessons: [
-      {
-        title: string;
-        type: string;
-        questionsCount: number;
-        time: number;
-        questions: [
-          {
-            id: number;
-            question: string;
-            options: string[];
-            correctAnswer: number;
-          },
-        ];
-        file: string;
-      },
-    ];
-  },
-] = [
+export const courseRoadMapData: {
+  week: string;
+  description: string;
+  lessons: Lesson[];
+}[] = [
   {
     week: "Week 1 - Week 4",
     description:
